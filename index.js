@@ -1,8 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
 const port = 3000;
 const app = require('express')();
+
+app.use(cors());
 
 const getTerms = () => {
     const termExceptions = require('./data/termExceptions.json');
