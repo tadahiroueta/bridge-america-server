@@ -1,10 +1,10 @@
-<name>
+{name}
 mm/dd/yyyy
-# <title>
+# {title}
 
 This is markdown, a special text file type that lets you add styling through text alone. For example, to italicise text simply use ‘*’ around your text (*example*) or use ‘#’ to make headers like this:
 
-### <header>
+### {header}
 
 Don’t worry too much about this whole markdown stuff; just write clearly and concisely. This website was made to make information easily accessible, not to earn you a good English grade.
 
