@@ -37,8 +37,12 @@ const getTerms = () => {
 
 const sendEmail = message => transporter
     .sendMail({ ...mailOptions, html: message }, (error, info) => {
-        if (error) console.log(error);
-        else console.log('Message sent: %s.', info.messageId);
+        if (error) {
+            console.log(error);
+            return false;
+        }
+        console.log('Message sent: %s.', info.messageId);
+        return true;
     });
 
 
@@ -56,9 +60,6 @@ app.get('/:filename', (req, res) => {
     else res.send(fs.readFileSync(filePath, 'utf-8'));
 });
 
-app.post('/submit', (req, res) => {
-    sendEmail(req.body.markdown);
-    res.send("Email sent.")
-});
+app.post('/submit', (req, res) => res.status(sendEmail(req.body.markdown) ? 200 : 500))
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
