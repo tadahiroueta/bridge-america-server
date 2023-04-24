@@ -3,7 +3,7 @@ const { join } = require('path');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 
-const port = 3000;
+const port = 3010;
 const mailOptions = {
     from: '"Bridge America" <bridgeamerica.sub@outlook.com>', 
     to: 'tadahiroueta@gmail.com', 
@@ -35,17 +35,6 @@ const getTerms = () => {
         .filter(file => !termExceptions.includes(file));
 }
 
-const sendEmail = message => transporter
-    .sendMail({ ...mailOptions, html: message }, (error, info) => {
-        if (error) {
-            console.log(error);
-            return false;
-        }
-        console.log('Message sent: %s.', info.messageId);
-        return true;
-    });
-
-
 
 app.get('/:filename', (req, res) => {
     const filename = req.params.filename;
@@ -60,6 +49,16 @@ app.get('/:filename', (req, res) => {
     else res.send(fs.readFileSync(filePath, 'utf-8'));
 });
 
-app.post('/submit', (req, res) => res.status(sendEmail(req.body.markdown) ? 200 : 500))
+app.post('/submit', (req, res) => 
+    transporter.sendMail({ ...mailOptions, html: req.body.markdown })
+        // ok or not ok
+        .then(() => {
+            console.log("Email sent");
+            res.sendStatus(200)
+        }, 
+        reason => {
+            console.log(reason)
+            res.sendStatus(500)
+}));
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
