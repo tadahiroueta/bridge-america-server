@@ -50,7 +50,7 @@ app.get('/:filename', (req, res) => {
 });
 
 app.post('/submit', (req, res) => 
-    transporter.sendMail({ ...mailOptions, html: req.body.markdown })
+    transporter.sendMail({ ...mailOptions, text: req.body.markdown })
         // ok or not ok
         .then(() => {
             console.log("Email sent");
